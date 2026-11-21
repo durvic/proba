@@ -1,0 +1,724 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Evaluare Numere 0–10</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: panou de lucru cu 4 file (clasă, aplicare individuală, rezultate, propuneri); elevul vede doar ecranul mare cu itemul. */
+:root{
+  --bg:#f3f7fa;--surface:#ffffff;--surface2:#e8f0f6;--ink:#12263a;--muted:#546a80;--line:#d1dde8;
+  --accent:#0b6e8a;--accent-ink:#ffffff;--accent-soft:#d6edf4;
+  --ok:#1b7f55;--ok-soft:#d5efe2;--mid:#9a6200;--mid-soft:#faeac6;--low:#b23a2b;--low-soft:#f8d9d3;
+  --ca:#0b8a8a;--cb:#3b62c4;--cc:#d9731a;--cd:#8a55b8;
+  --fd:'Fredoka',system-ui,sans-serif;--fb:'Nunito',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1a26;--surface:#162636;--surface2:#1f3346;--ink:#e6eef5;--muted:#9db2c4;--line:#2b4256;
+  --accent:#4cc3e0;--accent-ink:#06202a;--accent-soft:#14414f;
+  --ok:#4cc790;--ok-soft:#16382b;--mid:#f0b84a;--mid-soft:#3b2f12;--low:#ff917e;--low-soft:#431f19;
+  --ca:#3fc9c9;--cb:#86a2f2;--cc:#f2a15a;--cd:#c196e9;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1a26;--surface:#162636;--surface2:#1f3346;--ink:#e6eef5;--muted:#9db2c4;--line:#2b4256;
+  --accent:#4cc3e0;--accent-ink:#06202a;--accent-soft:#14414f;
+  --ok:#4cc790;--ok-soft:#16382b;--mid:#f0b84a;--mid-soft:#3b2f12;--low:#ff917e;--low-soft:#431f19;
+  --ca:#3fc9c9;--cb:#86a2f2;--cc:#f2a15a;--cd:#c196e9;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--fb);
+  padding-block:0 3rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--fd);font-weight:600;line-height:1.2;margin:0;text-wrap:balance}
+h1{font-size:clamp(1.5rem,4vw,2rem)}h2{font-size:1.35rem}h3{font-size:1.1rem}
+p{margin:0}.muted{color:var(--muted)}.small{font-size:.875rem}
+.top{padding-block:1.25rem .5rem;display:grid;gap:.25rem}
+.sub{color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;justify-content:space-between;padding-block:.5rem}
+.stor{font-size:.8125rem;color:var(--muted)}
+select,input[type=number],textarea{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.5rem .7rem;min-width:0;max-width:100%}
+textarea{width:100%;resize:vertical}
+label.inl{display:inline-flex;align-items:center;gap:.5rem;font-weight:700}
+.tabs{display:flex;gap:.25rem;overflow-x:auto;border-bottom:2px solid var(--line);margin-bottom:1rem}
+.tabs button{font:inherit;font-weight:800;background:none;border:0;border-bottom:4px solid transparent;margin-bottom:-2px;padding:.65rem 1rem;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{display:grid;gap:1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;display:grid;gap:.75rem;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1rem}
+.btn{font:inherit;font-weight:800;border-radius:10px;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:.55rem 1rem;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.danger{border-color:var(--low);color:var(--low);background:transparent}
+.btn.big{padding:.8rem 1.6rem;font-size:1.1rem}
+.btn:disabled{opacity:.45;cursor:default}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem}
+.kpi b{display:block;font-family:var(--fd);font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:.875rem}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.8125rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:.3rem;border-radius:999px;padding:.1rem .6rem;font-size:.8125rem;font-weight:800;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}.chip.mid{background:var(--mid-soft);color:var(--mid)}.chip.low{background:var(--low-soft);color:var(--low)}
+.chip.none{background:var(--surface2);color:var(--muted)}
+.tag{font-size:.7rem;font-weight:800;background:var(--surface2);color:var(--muted);border-radius:6px;padding:.05rem .4rem;margin-left:.3rem}
+.pills{display:flex;flex-wrap:wrap;gap:.4rem}
+.pills button{font:inherit;font-weight:700;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:.35rem .9rem;cursor:pointer}
+.pills button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chbox{position:relative;width:100%}
+.note{background:var(--accent-soft);border-radius:10px;padding:.6rem .8rem;font-size:.9rem}
+.warn{background:var(--mid-soft);color:var(--ink);border-radius:10px;padding:.6rem .8rem;font-size:.9rem}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:10px;font-weight:700;z-index:20;max-width:92vw}
+/* test: ecranul elevului */
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1rem;display:grid;gap:1rem;justify-items:center;text-align:center}
+.prog{height:10px;background:var(--surface2);border-radius:99px;overflow:hidden;width:100%}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.q{font-family:var(--fd);font-size:clamp(1.4rem,4.5vw,2.1rem);font-weight:500;line-height:1.25;max-width:26ch}
+.cue{width:100%;text-align:left;background:var(--accent-soft);border-radius:12px;padding:.6rem .9rem;font-size:.95rem}
+.cue b{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.vis{width:min(100%,420px);height:auto}
+.cell{fill:var(--surface2);stroke:var(--line);stroke-width:1.5}
+.s-plain{fill:var(--cb);stroke:var(--cb);stroke-width:2;stroke-linejoin:round}
+.s-on{fill:var(--cc);stroke:var(--cc);stroke-width:2;stroke-linejoin:round}
+.s-off{fill:none;stroke:var(--muted);stroke-width:2.5;stroke-dasharray:5 4;stroke-linejoin:round}
+.str{fill:none;stroke:var(--muted);stroke-width:2}
+.bk{fill:var(--surface2);stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.eq{font-family:var(--fd);font-size:clamp(2rem,8vw,3.2rem);font-weight:500;letter-spacing:.05em}
+.seq{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.seq span{font-family:var(--fd);font-size:clamp(2rem,8vw,3rem);min-width:3.4rem;padding:.2rem .6rem;border-radius:14px;background:var(--surface2)}
+.seq span.qm{background:var(--accent);color:var(--accent-ink)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:.75rem;width:100%;max-width:560px}
+.opt{font-family:var(--fd);font-size:clamp(2rem,9vw,3.2rem);min-height:92px;border-radius:18px;border:3px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.opt.wide{font-size:1.6rem}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.opt{position:relative}
+.opt .bd{position:absolute;top:6px;right:10px;font-size:1rem;font-family:var(--fb);font-weight:800}
+.tmark{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;width:100%;max-width:560px}
+.tmark .btn{padding:.9rem .8rem}
+.big0{font-family:var(--fd);font-size:1.6rem;letter-spacing:.12em;color:var(--muted);word-break:break-word}
+.fine{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:space-between;width:100%}
+.abars{display:grid;gap:.6rem}
+.ab{display:grid;grid-template-columns:minmax(120px,200px) 1fr auto;gap:.6rem;align-items:center}
+.ab .tr{height:14px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.ab .tr i{display:block;height:100%;border-radius:99px}
+.act{border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;display:grid;gap:.2rem;background:var(--surface)}
+.act b{font-family:var(--fd);font-weight:600}
+.act .m{font-size:.8125rem;color:var(--muted);font-weight:700}
+.grp{display:grid;gap:.35rem}
+.hm td,.hm th{text-align:center;padding:.3rem .35rem;font-size:.85rem}
+.hm td.n{text-align:left;white-space:nowrap}
+.hm .c1{background:var(--ok-soft);color:var(--ok);font-weight:800}
+.hm .c5{background:var(--mid-soft);color:var(--mid);font-weight:800}
+.hm .c0{background:var(--low-soft);color:var(--low);font-weight:800}
+.hm th.A{border-bottom:3px solid var(--ca)}.hm th.B{border-bottom:3px solid var(--cb)}.hm th.C{border-bottom:3px solid var(--cc)}.hm th.D{border-bottom:3px solid var(--cd)}
+details>summary{cursor:pointer;font-weight:800}
+.dot{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;margin-right:.4rem;vertical-align:-1px}
+/* scena cu personaje */
+.stage{position:relative;overflow:hidden;isolation:isolate;padding-bottom:6.5rem;background:linear-gradient(180deg,color-mix(in srgb,var(--ac,var(--accent)) 14%,var(--surface)),var(--surface) 70%)}
+.stage>*{position:relative;z-index:1}
+.stage>.scene{position:absolute;left:0;right:0;bottom:0;width:100%;height:96px;z-index:0}
+.scene .h1{fill:color-mix(in srgb,var(--ac) 34%,var(--surface))}
+.scene .h2{fill:color-mix(in srgb,var(--ac) 18%,var(--surface))}
+.stage>.sun{position:absolute;top:14px;right:18px;width:56px;height:56px;border-radius:50%;background:color-mix(in srgb,var(--ac) 30%,transparent);z-index:0}
+.talk{display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;width:100%}
+.chr{width:clamp(84px,22vw,132px);flex:none;animation:pop .35s ease-out}
+.chr svg{display:block;width:100%;height:auto}
+.chr.nod{animation:nod .4s ease-in-out}
+.bubble{position:relative;background:var(--surface);border:3px solid var(--ac);border-radius:24px;padding:.7rem 1.1rem;max-width:32rem;text-align:left;flex:1 1 15rem}
+.bubble::before{content:"";position:absolute;left:-11px;top:50%;width:18px;height:18px;margin-top:-9px;background:var(--surface);border-left:3px solid var(--ac);border-bottom:3px solid var(--ac);transform:rotate(45deg)}
+.bubble .who{display:block;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ac);filter:brightness(.85)}
+.bubble .q{max-width:none;text-align:left}
+.trail{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;max-width:30rem}
+.trail i{display:block;width:13px;height:13px;border-radius:50%;border:2.5px solid var(--c);background:transparent}
+.trail i.done{background:var(--c)}
+.trail i.cur{width:22px;height:22px;background:var(--surface);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 35%,transparent)}
+.stage .opt{border:3px solid var(--ac);background:var(--surface);color:var(--ink);border-radius:24px;box-shadow:0 5px 0 color-mix(in srgb,var(--ac) 55%,transparent);transition:transform .12s,box-shadow .12s}
+.stage .opt:hover{transform:translateY(-2px)}
+.stage .opt:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--ac) 55%,transparent)}
+.stage .opt[aria-pressed=true]{background:var(--ac);color:var(--surface);border-color:var(--ac)}
+.cast{display:flex;flex-wrap:wrap;gap:1rem 1.4rem;justify-content:center}
+.cast figure{margin:0;display:grid;justify-items:center;gap:.2rem}
+.cast .chr{width:92px;animation:none}
+.cast figcaption{font-weight:800;font-size:.8125rem;color:var(--ink)}
+.cf{position:absolute!important;top:-14px;width:9px;height:14px;border-radius:2px;opacity:.9;animation:fall 2.6s ease-in infinite;z-index:0!important}
+@keyframes pop{from{transform:scale(.85);opacity:.4}to{transform:scale(1);opacity:1}}
+@keyframes nod{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg) translateY(-4px)}65%{transform:rotate(6deg)}}
+@keyframes fall{to{transform:translateY(360px) rotate(420deg);opacity:0}}
+@media (max-width:560px){.talk{flex-direction:column}.bubble::before{left:50%;top:-11px;margin:0 0 0 -9px;transform:rotate(135deg)}}
+@media (prefers-reduced-motion:reduce){.chr,.chr.nod,.cf{animation:none}.cf{display:none}}
+@media (max-width:560px){.ab{grid-template-columns:1fr auto}.ab .tr{grid-column:1/-1;order:3}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Evaluare Numere 0–10</h1>
+    <p class="sub">Clasa pregătitoare · Matematică și explorarea mediului · numerație și descompunere · aplicare individuală</p>
+  </header>
+  <div class="bar">
+    <label class="inl" for="moment">Momentul evaluării <select id="moment"></select></label>
+    <span id="stor" class="stor"></span>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Secțiuni">
+    <button role="tab" data-act="tab" data-v="clasa" aria-selected="true">Clasa mea</button>
+    <button role="tab" data-act="tab" data-v="test" aria-selected="false">Aplică testul</button>
+    <button role="tab" data-act="tab" data-v="rez" aria-selected="false">Rezultate și grafice</button>
+    <button role="tab" data-act="tab" data-v="prop" aria-selected="false">Propuneri de îmbunătățire</button>
+  </nav>
+  <section id="p-clasa" class="panel"></section>
+  <section id="p-test" class="panel" hidden></section>
+  <section id="p-rez" class="panel" hidden></section>
+  <section id="p-prop" class="panel" hidden></section>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</div>
+<input type="file" id="file" accept="application/json,.json" hidden>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+
+/* ---------- Conținutul testului ---------- */
+var MOMENTE=['Inițială','Intermediară','Finală'];
+var AREAS=[
+ {id:'A',nume:'Numerație 0–10',scurt:'Numerație',col:'--ca',desc:'numără, citește și recunoaște numerele 0–10'},
+ {id:'B',nume:'Ordine și vecini',scurt:'Ordine',col:'--cb',desc:'folosește șirul numerelor, vecinii și ordonarea'},
+ {id:'C',nume:'Descompunere',scurt:'Descompunere',col:'--cc',desc:'formează un număr din două părți (partea și întregul)'},
+ {id:'D',nume:'Situații-problemă',scurt:'Probleme',col:'--cd',desc:'folosește numerele și descompunerea în povești scurte'}
+];
+var ITEMS=[
+ {id:'n1',a:'A',t:'oral',short:'Numără 0→10',q:'Barbu vrea să numere cu tine. Numără de la 0 la 10!',say:'Spune: „Numără cu voce tare, de la 0 până la 10.” Corect = fără omisiuni și fără ajutor.',hint:'Numărat în ritm, cu mișcare (pași, bătăi din palme), de câteva ori pe zi.'},
+ {id:'n2',a:'A',t:'oral',short:'Numără 10→0',q:'Acum numără înapoi, ca la lansarea unei rachete: de la 10 la 0!',say:'Spune: „Acum numără înapoi, de la 10 până la 0.” Corect = fără omisiuni și fără ajutor.',hint:'Jocul „Racheta”: numărătoare inversă înainte de „lansare”.'},
+ {id:'n3',a:'A',t:'choice',short:'Numără 7 obiecte',q:'Câte stele a găsit Barbu pe cer?',say:'Spune: „Câte stele sunt aici? Arată numărul.”',v:{k:'scatter',n:7,shape:'star',alt:'7 stele'},ch:[5,6,7,8],ans:7,diag:{6:'omite un obiect la numărare',8:'numără un obiect de două ori'},hint:'Atinge fiecare obiect o singură dată și mută-l într-o parte după ce l-ai numărat.'},
+ {id:'n4',a:'A',t:'choice',short:'Înțelege zero',q:'Barbu are un coș. Câte mere sunt în coș?',say:'Spune: „Câte mere sunt în coș? Arată numărul.”',v:{k:'basket'},ch:[0,1,2,10],ans:0,diag:{1:'nu asociază „nimic” cu zero',10:'alege cel mai mare număr la întâmplare'},hint:'Zero înseamnă niciun obiect: folosește un coș gol și compară-l cu un coș cu 1 obiect.'},
+ {id:'n5',a:'A',t:'choice',short:'Numără 10 obiecte',q:'Câte ghinde a strâns Barbu?',say:'Spune: „Câte ghinde sunt? Arată numărul.”',v:{k:'scatter',n:10,shape:'acorn',alt:'10 ghinde'},ch:[7,8,9,10],ans:10,diag:{9:'omite un obiect la numărare',8:'pierde șirul numărării'},hint:'Grupează câte 5 (cadrul cu 10 căsuțe) ca să vezi repede 10.'},
+ {id:'n6',a:'A',t:'choice',short:'Recunoaște cifra 6',q:'Barbu a pierdut cifra 6. Arat-o tu!',say:'Spune: „Arată-mi cifra 6.”',ch:[2,6,8,9],ans:6,diag:{9:'confundă 6 cu 9 (oglindire)',8:'confundă cifre cu formă asemănătoare'},hint:'Trasează cifra în aer, în gris sau nisip; pune cifrele 6 și 9 una lângă alta.'},
+ {id:'o1',a:'B',t:'choice',short:'Numărul de după 4',q:'Ce număr vine după 4?',say:'Spune: „Ce număr vine după 4?”',ch:[3,4,5,6],ans:5,diag:{3:'confundă „după” cu „înainte”',4:'repetă numărul dat'},hint:'Trenul numerelor: fiecare copil își spune vecinul din față și din spate.'},
+ {id:'o2',a:'B',t:'choice',short:'Numărul de dinainte 8',q:'Ce număr vine înainte de 8?',say:'Spune: „Ce număr vine înainte de 8?”',ch:[6,7,8,9],ans:7,diag:{9:'confundă „înainte” cu „după”',8:'repetă numărul dat'},hint:'Scara cu cretă 0–10: un pas înapoi înseamnă numărul de dinainte.'},
+ {id:'o3',a:'B',t:'choice',short:'Număr lipsă în șir',q:'Care număr lipsește?',say:'Spune: „Uită-te la șir. Care număr lipsește?”',v:{k:'seq',seq:['6','7','?','9']},ch:[5,7,8,10],ans:8,diag:{7:'repetă un număr din șir',10:'continuă șirul în loc să completeze'},hint:'Joc „Cine lipsește din tren?”: un vagon se ascunde, ceilalți spun numărul.'},
+ {id:'o4',a:'B',t:'order',short:'Ordonează 3 numere',q:'Ofelia vrea cifrele în ordine: de la cea mai mică la cea mai mare. Atinge-le!',say:'Spune: „Atinge cifrele în ordine, de la cea mai mică la cea mai mare.”',items:[4,9,2],ans:[2,4,9],hint:'Cartonașe amestecate: 3, apoi 5 cifre de ordonat cu clepsidra.'},
+ {id:'d1',a:'C',t:'choice',short:'5 = 2 + ?',q:'Țuțu are 5 stele. 2 sunt pline. Câte sunt goale?',say:'Spune: „Sunt 5 stele în total. 2 sunt pline. Câte sunt goale?”',v:{k:'frame',n:5,on:2,shape:'star',eq:'5 = 2 + ?',alt:'5 stele, 2 pline'},ch:[2,3,4,5],ans:3,diag:{2:'repetă numărul de stele pline',5:'repetă totalul'},hint:'„Mâinile mele”: ridic 5 degete, cobor 2. Câte au rămas ridicate?'},
+ {id:'d2',a:'C',t:'choice',short:'7 = 3 + ?',q:'Țuțu are 7 stele. 3 sunt pline. Câte sunt goale?',say:'Spune: „Sunt 7 stele în total. 3 sunt pline. Câte sunt goale?”',v:{k:'frame',n:7,on:3,shape:'star',eq:'7 = 3 + ?',alt:'7 stele, 3 pline'},ch:[3,4,5,6],ans:4,diag:{3:'repetă numărul de stele pline',7:'repetă totalul'},hint:'„Două cutii, un număr”: 7 pietricele în două cutii, în toate felurile.'},
+ {id:'d3',a:'C',t:'choice',short:'10 = 6 + ?',q:'Țuțu are 10 stele. 6 sunt pline. Câte sunt goale?',say:'Spune: „Sunt 10 stele în total. 6 sunt pline. Câte sunt goale?”',v:{k:'frame',n:10,on:6,shape:'star',eq:'10 = 6 + ?',alt:'10 stele, 6 pline'},ch:[3,4,5,6],ans:4,diag:{6:'repetă numărul de stele pline',5:'estimează fără să numere'},hint:'Cadrul cu 10 căsuțe: umple 6, apoi numără căsuțele goale.'},
+ {id:'d4',a:'C',t:'choice',short:'8 = 5 + ? (fără imagine)',q:'8 = 5 + ?',say:'Spune: „Gândește-te: 8 este 5 și încă câte?” (fără obiecte)',v:{k:'eq',eq:'8 = 5 + ?'},ch:[2,3,4,5],ans:3,diag:{5:'repetă un număr din scriere',2:'estimează fără strategie'},hint:'Trecerea de la obiecte la cifre: „Casa numerelor”, apoi aceleași perechi fără buline.'},
+ {id:'d5',a:'C',t:'multi',short:'Perechi pentru 8',q:'Țuțu are 8 în căsuță. Alege toate perechile care dau 8.',say:'Spune: „Alege toate perechile care dau 8.” Poate citi perechile cu voce tare.',opts:['3 + 5','4 + 4','6 + 3','7 + 1','2 + 5'],ans:['3 + 5','4 + 4','7 + 1'],hint:'Joc „Fă 8!” cu cartonașe: caută perechile care completează numărul.'},
+ {id:'p1',a:'D',t:'choice',short:'Problemă: 6 − 2',q:'Ana avea 6 baloane. 2 au zburat. Câte au rămas?',say:'Citește povestea: „Ana avea 6 baloane. 2 au zburat. Câte baloane au rămas?”',v:{k:'frame',n:6,on:4,shape:'balloon',alt:'6 baloane, 2 au zburat'},ch:[3,4,5,8],ans:4,diag:{8:'adună în loc să scadă',2:'repetă numărul din poveste',6:'repetă totalul'},hint:'„Povești cu jetoane”: elevul dramatizează povestea și spune răspunsul.'},
+ {id:'p2',a:'D',t:'choice',short:'Problemă: 9 = 4 + ?',q:'În cutie sunt 9 creioane. 4 sunt albastre, restul roșii. Câte sunt roșii?',say:'Citește: „În cutie sunt 9 creioane. 4 sunt albastre, restul sunt roșii. Câte creioane sunt roșii?”',ch:[3,4,5,6],ans:5,diag:{4:'repetă numărul din poveste',3:'estimează fără strategie'},hint:'Povești inventate pornind de la o descompunere: „9 = 4 + 5”.'}
+];
+var BANK={
+ A:[
+  {n:'Broscuța pe nuferi',m:'6 min',d:'Pe podea, 11 „nuferi” din hârtie cu cifrele 0–10. Elevul sare din nufăr în nufăr rostind numărul, întâi înainte, apoi înapoi. La „Stop!” spune ce număr urmează.'},
+  {n:'Coșul fermecat',m:'5 min',d:'Coșuri cu 0–10 jetoane, unul rămâne gol. Elevul numără atingând fiecare obiect o singură dată și așază cartonașul cu cifra. Coșul gol arată ce înseamnă zero.'},
+  {n:'Perechile din oglindă',m:'6 min',d:'Joc de memorie: cartonaș cu cifră ↔ cartonaș cu puncte. Pentru 6 și 9 se trasează cifra în aer și în gris sau nisip, cu degetul.'},
+  {n:'Vânătorii de numere',m:'8 min',d:'Extindere: elevii caută prin clasă grupuri de 0–10 obiecte, le numără și notează cifra pe un bilețel; un coleg verifică.'}],
+ B:[
+  {n:'Trenul numerelor',m:'6 min',d:'11 copii cu cifre 0–10 formează trenul. Un „vagon” se ascunde și ceilalți spun ce număr lipsește. Apoi fiecare spune: „înainte de mine e…, după mine e…”.'},
+  {n:'Scara cu cretă',m:'5 min',d:'Scara 0–10 desenată cu cretă. Elevul sare o treaptă înainte, apoi una înapoi, rostind numerele; întrebi: „Pe ce treaptă ai ajuns?”.'},
+  {n:'Cartonașe amestecate',m:'5 min',d:'3, apoi 4–5 cartonașe cu cifre se ordonează cât mai repede de la cel mai mic la cel mai mare; perechile se verifică reciproc.'},
+  {n:'Numărul-spion',m:'6 min',d:'Extindere: elevii ghicesc numărul după indicii („vine după 6 și înainte de 8”) și își inventează propriile indicii.'}],
+ C:[
+  {n:'Mâinile mele',m:'5 min',d:'Ridici 5 degete, cobori 2: „Câte au rămas ridicate?”. Se notează 5 = 2 + 3. Se repetă pentru 7 și 10.'},
+  {n:'Două cutii, un număr',m:'8 min',d:'7 pietricele se așază în două cutii în cât mai multe moduri. Se ascunde o cutie: „În total sunt 7, aici sunt 3. Câte sunt în cutia ascunsă?”. Se notează 7 = 3 + 4.'},
+  {n:'Casa numerelor',m:'8 min',d:'Pentru fiecare număr se desenează o casă cu două camere; elevii împart buline în camere și completează 8 = 5 + 3. Apoi lucrează doar cu cifre, fără buline.'},
+  {n:'Fă 10!',m:'6 min',d:'Cartonașe 0–10: perechile care formează 10 (4 și 6) se caută cât mai repede. Extindere: același joc pentru 8 și 9.'}],
+ D:[
+  {n:'Povești cu jetoane',m:'6 min',d:'Spui povestea („Ana avea 6 baloane, 2 au zburat”), elevul o dramatizează cu jetoane și spune răspunsul. Apoi schimbați rolurile.'},
+  {n:'Teatrul de păpuși',m:'7 min',d:'Păpușile „cumpără” și „dau” obiecte; elevii povestesc ce s-a întâmplat și arată numerele cu cartonașe.'},
+  {n:'Inventează o poveste',m:'6 min',d:'Se dă o descompunere (7 = 3 + 4) și elevul inventează o poveste potrivită, folosind jetoane.'},
+  {n:'Problema colegului',m:'8 min',d:'Extindere: în perechi, un copil inventează o problemă cu numere până la 10, celălalt o rezolvă cu jetoane și o explică.'}]
+};
+var LV={ok:{n:'Atins',s:'●'},mid:{n:'În dezvoltare',s:'◐'},low:{n:'Are nevoie de sprijin',s:'○'}};
+var LS='prep010_v1';
+
+/* ---------- Stare ---------- */
+var S={elevi:[],tab:'clasa',moment:'Inițială',sel:null,run:null,chart:'arii',T:{ok:80,mid:50},stor:'init',confirmDel:null,confirmStop:false,busy:false,pend:null};
+var db=null,chart=null;
+
+function today(){try{return new Date().toLocaleDateString('sv-SE')}catch(e){return new Date().toISOString().slice(0,10)}}
+function newId(){return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function avg(a){return a.length?a.reduce(function(x,y){return x+y},0)/a.length:0}
+function lsGet(){try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}}
+function lsSet(){try{localStorage.setItem(LS,JSON.stringify(S.elevi))}catch(e){}}
+function thGet(){try{var t=JSON.parse(localStorage.getItem(LS+'_t')||'null');if(t&&t.ok>t.mid)S.T=t}catch(e){}}
+function thSet(){try{localStorage.setItem(LS+'_t',JSON.stringify(S.T))}catch(e){}}
+var toastT;
+function toast(m){var t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},4200)}
+function sortEl(a){return a.sort(function(x,y){return String(x.nume).localeCompare(String(y.nume),'ro',{numeric:true})})}
+
+/* ---------- Calcule ---------- */
+function areaItems(a){return ITEMS.filter(function(i){return i.a===a})}
+function pctArea(ev,a){var its=areaItems(a);return 100*its.reduce(function(t,i){return t+(ev.s[i.id]||0)},0)/its.length}
+function pctTot(ev){return 100*ITEMS.reduce(function(t,i){return t+(ev.s[i.id]||0)},0)/ITEMS.length}
+function lvl(p){return p>=S.T.ok?'ok':(p>=S.T.mid?'mid':'low')}
+function chip(l){return '<span class="chip '+l+'">'+LV[l].s+' '+LV[l].n+'</span>'}
+function evalSt(m){return S.elevi.filter(function(e){return e.ev&&e.ev[m]})}
+function stu(id){return S.elevi.filter(function(e){return e.id===id})[0]}
+function areaAvg(m){return AREAS.map(function(a){return avg(evalSt(m).map(function(e){return pctArea(e.ev[m],a.id)}))})}
+function itemRate(m,it){return 100*avg(evalSt(m).map(function(e){return e.ev[m].s[it.id]||0}))}
+
+function score(it,resp){
+  if(it.t==='choice')return String(resp)===String(it.ans)?1:0;
+  if(it.t==='order'){var r=String(resp).split(',').map(Number);if(r.join()===it.ans.join())return 1;return r[0]===it.ans[0]?.5:0}
+  if(it.t==='multi'){var ch=String(resp)?String(resp).split('|'):[];var miss=it.ans.filter(function(x){return ch.indexOf(x)<0}).length;var extra=ch.filter(function(x){return it.ans.indexOf(x)<0}).length;var er=miss+extra;return er===0?1:(er===1?.5:0)}
+  return Number(resp)
+}
+
+/* ---------- Stocare ---------- */
+function renderStor(){
+  var m={db:'Salvat în contul tău, se păstrează între sesiuni',local:'Salvat doar în acest browser. Exportă o copie periodic.',init:'Se conectează…',slow:'Conexiunea întârzie; datele afișate pot fi vechi.'};
+  $('stor').textContent=m[S.stor]||''
+}
+async function putStudent(st){
+  var i=S.elevi.map(function(e){return e.id}).indexOf(st.id);
+  if(i<0)S.elevi.push(st);else S.elevi[i]=st;
+  sortEl(S.elevi);lsSet();
+  if(db){try{var b=clone(st);delete b.id;await db.doc('elevi/'+st.id).set(b)}catch(e){toast('Nu s-a putut salva în cont. Doar proprietarul paginii poate modifica datele.')}}
+}
+async function delStudent(id){
+  S.elevi=S.elevi.filter(function(e){return e.id!==id});lsSet();
+  if(db){try{await db.doc('elevi/'+id).delete()}catch(e){toast('Nu s-a putut șterge din cont.')}}
+}
+function startDb(){
+  if(!window.claude||!window.claude.use){S.stor='local';renderStor();return}
+  var tm=setTimeout(function(){if(S.stor==='init'){S.stor='slow';renderStor()}},10000);
+  window.claude.use('db').then(function(d){
+    if(!d){clearTimeout(tm);S.stor='local';renderStor();return}
+    db=d;
+    db.collection('elevi').onSnapshot(function(snap){
+      if(!snap.metadata.fromCache)clearTimeout(tm);
+      S.elevi=sortEl(snap.docs.map(function(x){var o=clone(x.data());o.id=x.id;return o}));
+      S.stor='db';lsSet();renderStor();refresh()
+    },function(){clearTimeout(tm);S.stor='local';renderStor()})
+  }).catch(function(){clearTimeout(tm);S.stor='local';renderStor()})
+}
+
+/* ---------- Vizualuri ---------- */
+function starPts(cx,cy,R){var p=[];for(var i=0;i<10;i++){var r=i%2?R*.45:R,a=-Math.PI/2+i*Math.PI/5;p.push((cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1))}return p.join(' ')}
+function shp(k,cx,cy,st){
+  if(k==='star')return '<polygon class="s-'+st+'" points="'+starPts(cx,cy,22)+'"/>';
+  if(k==='balloon')return '<g><ellipse class="s-'+st+'" cx="'+cx+'" cy="'+(cy-5)+'" rx="15" ry="19"/><path class="str" d="M'+cx+' '+(cy+14)+' q-5 6 0 12"/></g>';
+  if(k==='acorn')return '<g><ellipse class="s-'+st+'" cx="'+cx+'" cy="'+(cy+4)+'" rx="11" ry="14"/><path class="s-'+st+'" d="M'+(cx-15)+' '+(cy-4)+'q15-18 30 0z"/><path class="str" d="M'+cx+' '+(cy-14)+'v-6"/></g>';
+  return '<circle class="s-'+st+'" cx="'+cx+'" cy="'+cy+'" r="14"/>'
+}
+function vis(v){
+  if(!v)return '';
+  var alt=esc(v.alt||'');
+  if(v.k==='seq')return '<div class="seq" role="img" aria-label="Șir de numere cu un număr lipsă">'+v.seq.map(function(x){return '<span'+(x==='?'?' class="qm"':'')+'>'+x+'</span>'}).join('')+'</div>';
+  if(v.k==='eq')return '<div class="eq">'+esc(v.eq)+'</div>';
+  if(v.k==='basket')return '<svg class="vis" viewBox="0 0 320 150" role="img" aria-label="Un coș gol"><path class="bk" d="M85 62h150l-16 74H101z"/><path class="bk" d="M115 62c0-46 90-46 90 0" fill="none"/></svg>';
+  if(v.k==='scatter'){
+    var P=[[34,34],[100,24],[166,46],[232,26],[284,58],[48,106],[112,118],[178,102],[238,120],[290,106]],O=[0,6,3,8,1,5,9,2,7,4],s='';
+    for(var i=0;i<v.n;i++){var q=P[O[i]];s+=shp(v.shape,q[0],q[1],'plain')}
+    return '<svg class="vis" viewBox="0 0 320 150" role="img" aria-label="'+alt+'">'+s+'</svg>'
+  }
+  if(v.k==='frame'){
+    var t='';
+    for(var j=0;j<10;j++){var cx=34+(j%5)*58,cy=40+Math.floor(j/5)*62;t+='<rect class="cell" x="'+(cx-26)+'" y="'+(cy-26)+'" width="52" height="52" rx="8"/>';if(j<v.n)t+=shp(v.shape,cx,cy,j<v.on?'on':'off')}
+    return '<svg class="vis" viewBox="0 0 320 132" role="img" aria-label="'+alt+'">'+t+'</svg>'+(v.eq?'<div class="eq">'+esc(v.eq)+'</div>':'')
+  }
+  return ''
+}
+
+/* ---------- Clasa ---------- */
+function renderClasa(){
+  var n=S.elevi.length,done=evalSt(S.moment).length,demo=S.elevi.some(function(e){return e.demo});
+  var h='';
+  if(demo)h+='<div class="warn">În clasă sunt date demonstrative (marcate „demo”). Șterge-le înainte să începi cu elevii tăi.</div>';
+  h+='<div class="card"><h2>Elevii clasei</h2><p class="muted small">Folosește prenumele sau un cod (de exemplu „Andrei M.” sau „E07”), nu nume complete. Până la 30 de elevi.</p>';
+  h+='<label for="names" class="small" style="font-weight:700">Adaugă elevi, câte unul pe rând</label><textarea id="names" rows="4" placeholder="Maria P.\nAndrei M.\nE07"></textarea>';
+  h+='<div class="row"><button class="btn" data-act="add"'+(n>=30?' disabled':'')+'>Adaugă în clasă</button><span class="muted small">'+n+' din 30 locuri ocupate</span></div></div>';
+  if(!n){
+    h+='<div class="card"><h3>Vrei să vezi cum arată rezultatele?</h3><p class="muted">Încarcă o clasă demonstrativă de 24 de elevi cu rezultate simulate la două momente. Poți s-o ștergi oricând.</p><div class="row"><button class="btn ghost" data-act="demo">Încarcă clasa demonstrativă</button></div></div>';
+  } else {
+    h+='<div class="card"><div class="row" style="justify-content:space-between"><h3>Evaluați la momentul „'+esc(S.moment)+'”: '+done+' din '+n+'</h3></div><div class="prog" aria-hidden="true"><i style="width:'+Math.round(100*done/n)+'%"></i></div>';
+    h+='<div class="tw"><table><thead><tr><th>#</th><th>Elev</th>'+MOMENTE.map(function(m){return '<th>'+m+'</th>'}).join('')+'<th></th></tr></thead><tbody>';
+    S.elevi.forEach(function(e,i){
+      h+='<tr><td>'+(i+1)+'</td><td>'+esc(e.nume)+(e.demo?'<span class="tag">demo</span>':'')+'</td>';
+      MOMENTE.forEach(function(m){var ev=e.ev&&e.ev[m];h+='<td>'+(ev?chip(lvl(pctTot(ev))).replace(/>.*<\/span>$/,'>'+Math.round(pctTot(ev))+'%</span>'):'<span class="chip none">—</span>')+'</td>'});
+      h+='<td><div class="row">';
+      if(S.confirmDel===e.id)h+='<button class="btn danger" data-act="delyes" data-id="'+e.id+'">Șterge definitiv</button><button class="btn ghost" data-act="delno">Anulează</button>';
+      else h+='<button class="btn ghost" data-act="go" data-id="'+e.id+'">'+((e.ev&&e.ev[S.moment])?'Reia testul':'Evaluează')+'</button><button class="btn danger" data-act="del" data-id="'+e.id+'" aria-label="Șterge elevul '+esc(e.nume)+'">Șterge</button>';
+      h+='</div></td></tr>'
+    });
+    h+='</tbody></table></div></div>';
+  }
+  h+='<div class="grid2"><div class="card"><h3>Copii de siguranță și export</h3><p class="muted small">Exportă periodic o copie a rezultatelor. Fișierul CSV se deschide în Excel.</p><div class="row"><button class="btn ghost" data-act="expcsv">Exportă CSV (Excel)</button><button class="btn ghost" data-act="expjson">Exportă copie</button><button class="btn ghost" data-act="imp">Importă copie</button>'+(demo?'<button class="btn danger" data-act="demodel">Șterge datele demo</button>':'')+'</div></div>';
+  h+='<div class="card"><h3>Pragurile de interpretare</h3><p class="muted small">Pentru fiecare arie și pentru total: „Atins” de la pragul de sus, „În dezvoltare” de la pragul de jos.</p><div class="row"><label class="inl small" for="thOk">Atins de la <input id="thOk" type="number" min="51" max="100" value="'+S.T.ok+'" style="width:5rem">%</label><label class="inl small" for="thMid">Dezvoltare de la <input id="thMid" type="number" min="1" max="99" value="'+S.T.mid+'" style="width:5rem">%</label></div></div></div>';
+  h+='<details class="card"><summary>Cum funcționează testul</summary><div class="grid2" style="margin-top:.5rem"><div><h3>Structură</h3><p class="small">17 itemi, aproximativ 10 minute pe elev: <b>Numerație</b> (6), <b>Ordine și vecini</b> (4), <b>Descompunere</b> (5), <b>Situații-problemă</b> (2). Elevul apasă pe ecran, iar tu citești enunțul din caseta „Pentru învățător”. Două cerințe (numărat înainte și înapoi) le notezi tu.</p></div><div><h3>Punctare</h3><p class="small">Fiecare item valorează 1 punct. Pentru ordonare, perechi și numărat oral se acordă și ½ punct (o singură greșeală sau ajutor). Rezultatul nu este afișat elevului, ca să nu fie descurajat.</p></div></div><p class="small muted">La clasa pregătitoare nu se acordă note sau calificative, evaluarea se consemnează descriptiv. Nivelurile „Atins / În dezvoltare / Are nevoie de sprijin” sunt pentru uzul tău intern și nu înlocuiesc raportul de evaluare. Verifică potrivirea cu competențele specifice din programa pe care o folosești la clasă.</p></details>';
+  $('p-clasa').innerHTML=h
+}
+
+/* ---------- Personaje (originale, inspirate de poveștile din pădure) ---------- */
+var CH_INFO={A:{nome:'Ursulețul Barbu',loc:'Poiana cu ghinde'},B:{nome:'Bufnița Ofelia',loc:'Copacul cel înalt'},C:{nome:'Iedul Țuțu',loc:'Căsuța cu două camere'},D:{nome:'Vulpița Vivi',loc:'Drumul poveștilor'}};
+function acol(a){return AREAS.filter(function(x){return x.id===a})[0].col}
+function charSVG(a){
+  var K='#3b2a20',st=' stroke="'+K+'" stroke-width="2.5" stroke-linejoin="round"',eye=function(x,y,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+K+'"/><circle cx="'+(x+1.6)+'" cy="'+(y-1.6)+'" r="1.6" fill="#fff"/>'},s='';
+  if(a==='A'){
+    s+='<circle cx="27" cy="34" r="14" fill="#8f5a3a"'+st+'/><circle cx="93" cy="34" r="14" fill="#8f5a3a"'+st+'/><circle cx="27" cy="34" r="7" fill="#e3b690"/><circle cx="93" cy="34" r="7" fill="#e3b690"/>';
+    s+='<ellipse cx="60" cy="114" rx="36" ry="20" fill="#a56b45"'+st+'/><circle cx="60" cy="62" r="40" fill="#a56b45"'+st+'/><ellipse cx="60" cy="76" rx="19" ry="14" fill="#ebcba5"/>';
+    s+='<circle cx="37" cy="72" r="6" fill="#f08a8a" opacity=".45"/><circle cx="83" cy="72" r="6" fill="#f08a8a" opacity=".45"/>'+eye(45,56,5)+eye(75,56,5);
+    s+='<ellipse cx="60" cy="70" rx="6.5" ry="4.8" fill="'+K+'"/><path d="M52 81q8 8 16 0" fill="none" stroke="'+K+'" stroke-width="2.5" stroke-linecap="round"/>'
+  } else if(a==='B'){
+    s+='<polygon points="24,40 30,8 52,26" fill="#9a7b5a"'+st+'/><polygon points="96,40 90,8 68,26" fill="#9a7b5a"'+st+'/>';
+    s+='<ellipse cx="60" cy="70" rx="42" ry="44" fill="#9a7b5a"'+st+'/><ellipse cx="60" cy="96" rx="24" ry="19" fill="#ecd9b8"/>';
+    s+='<path d="M50 90l4 5 4-5m4 0l4 5 4-5" fill="none" stroke="#b79a73" stroke-width="2" stroke-linecap="round"/>';
+    s+='<circle cx="42" cy="56" r="17" fill="#fff"'+st+'/><circle cx="78" cy="56" r="17" fill="#fff"'+st+'/>'+eye(43,57,8)+eye(77,57,8);
+    s+='<polygon points="53,68 67,68 60,82" fill="#f2b233"'+st+'/>'
+  } else if(a==='C'){
+    s+='<path d="M40 30q-6-22 10-24-4 8 0 20z" fill="#e0cfa8"'+st+'/><path d="M80 30q6-22-10-24 4 8 0 20z" fill="#e0cfa8"'+st+'/>';
+    s+='<ellipse cx="22" cy="54" rx="15" ry="7" transform="rotate(-18 22 54)" fill="#f7f5f0"'+st+'/><ellipse cx="98" cy="54" rx="15" ry="7" transform="rotate(18 98 54)" fill="#f7f5f0"'+st+'/>';
+    s+='<ellipse cx="60" cy="116" rx="30" ry="18" fill="#f7f5f0"'+st+'/><ellipse cx="60" cy="62" rx="31" ry="35" fill="#f7f5f0"'+st+'/><ellipse cx="60" cy="84" rx="17" ry="13" fill="#efe0cd"/>';
+    s+='<circle cx="38" cy="72" r="5.5" fill="#f08a8a" opacity=".45"/><circle cx="82" cy="72" r="5.5" fill="#f08a8a" opacity=".45"/>'+eye(49,58,5)+eye(71,58,5);
+    s+='<circle cx="55" cy="82" r="2" fill="'+K+'"/><circle cx="65" cy="82" r="2" fill="'+K+'"/><path d="M53 90q7 6 14 0" fill="none" stroke="'+K+'" stroke-width="2.5" stroke-linecap="round"/><path d="M60 98q-3 8 0 12 3-4 0-12z" fill="#e0cfa8"'+st+'/>'
+  } else {
+    s+='<polygon points="20,52 28,8 56,32" fill="#ef8a35"'+st+'/><polygon points="100,52 92,8 64,32" fill="#ef8a35"'+st+'/><polygon points="28,40 31,20 44,32" fill="#f6c49a"/><polygon points="92,40 89,20 76,32" fill="#f6c49a"/>';
+    s+='<ellipse cx="60" cy="114" rx="34" ry="20" fill="#ef8a35"'+st+'/><ellipse cx="60" cy="116" rx="16" ry="14" fill="#fff6ea"/><ellipse cx="60" cy="66" rx="42" ry="35" fill="#ef8a35"'+st+'/>';
+    s+='<ellipse cx="40" cy="82" rx="22" ry="15" fill="#fff6ea"/><ellipse cx="80" cy="82" rx="22" ry="15" fill="#fff6ea"/>';
+    s+=eye(45,62,5)+eye(75,62,5)+'<ellipse cx="60" cy="82" rx="7" ry="5" fill="'+K+'"/><path d="M52 92q8 7 16 0" fill="none" stroke="'+K+'" stroke-width="2.5" stroke-linecap="round"/>'
+  }
+  return '<svg viewBox="0 0 120 124" role="img" aria-label="'+esc(CH_INFO[a].nome)+'">'+s+'</svg>'
+}
+function sceneSVG(){return '<svg class="scene" viewBox="0 0 400 110" preserveAspectRatio="none" aria-hidden="true"><path class="h2" d="M0 52Q90 8 190 46T400 34V110H0Z"/><path class="h1" d="M0 82Q110 44 230 76T400 66V110H0Z"/></svg>'}
+function cast(){return '<div class="cast">'+['A','B','C','D'].map(function(a){return '<figure style="--ac:var('+acol(a)+')"><div class="chr">'+charSVG(a)+'</div><figcaption>'+esc(CH_INFO[a].nome)+'</figcaption></figure>'}).join('')+'</div>'}
+function confetti(){var c=['--ca','--cb','--cc','--cd'],s='';for(var i=0;i<18;i++)s+='<i class="cf" style="left:'+(3+i*5.4)+'%;background:var('+c[i%4]+');animation-delay:'+((i*137)%900)/1000+'s"></i>';return s}
+
+/* ---------- Aplicare test ---------- */
+function renderTest(){
+  var h='',r=S.run;
+  if(!r){
+    if(!S.elevi.length){$('p-test').innerHTML='<div class="card"><h2>Aplică testul</h2><p class="muted">Adaugă mai întâi elevii în secțiunea „Clasa mea”.</p></div>';return}
+    h='<div class="stage" style="--ac:var(--ca)"><div class="sun"></div>'+sceneSVG()+'<h2>Aventura din Pădurea Numerelor</h2><p class="muted" style="max-width:34rem">Patru prieteni din pădure au nevoie de ajutor. Testul se aplică individual, cu elevul lângă tine. Elevul răspunde apăsând pe ecran, iar rezultatul se salvează automat.</p>'+cast();
+    h+='<div class="row" style="justify-content:center"><label class="inl" for="selStu">Elev <select id="selStu">'+S.elevi.map(function(e){var d=e.ev&&e.ev[S.moment];return '<option value="'+e.id+'"'+(e.id===S.sel?' selected':'')+'>'+esc(e.nume)+(d?' (evaluat)':'')+'</option>'}).join('')+'</select></label>';
+    h+='<span class="muted">Moment: <b>'+esc(S.moment)+'</b></span><button class="btn big" data-act="start">Începem aventura</button></div></div>';
+  } else if(r.done){
+    var st=stu(r.id),ev=st&&st.ev&&st.ev[r.moment];
+    if(!ev){$('p-test').innerHTML='';return}
+    h='<div class="stage" style="--ac:var(--cc)"><div class="sun"></div>'+sceneSVG()+confetti()+'<div class="q" style="max-width:none">Bravo! Prietenii din pădure îți mulțumesc!</div>'+cast()+'<p class="muted">Rezultatul este doar pentru tine, învățătorul. Elevul nu vede punctajul.</p></div>';
+    h+='<div class="card"><h2>Rezultat: '+esc(st.nume)+' · '+esc(r.moment)+'</h2><div class="abars">';
+    AREAS.forEach(function(a){var p=pctArea(ev,a.id);h+='<div class="ab"><span><i class="dot" style="background:var('+a.col+')"></i>'+a.nume+'</span><div class="tr"><i style="width:'+p+'%;background:var('+a.col+')"></i></div><span>'+Math.round(p)+'% '+chip(lvl(p))+'</span></div>'});
+    h+='</div><p><b>Total: '+Math.round(pctTot(ev))+'%</b> '+chip(lvl(pctTot(ev)))+'</p><div class="row"><button class="btn" data-act="next">Elevul următor</button><button class="btn ghost" data-act="fiche">Vezi fișa și propunerile</button><button class="btn ghost" data-act="home">Înapoi la clasă</button></div></div>';
+  } else {
+    var it=ITEMS[r.i],st2=stu(r.id),ci=CH_INFO[it.a],verb=(it.t==='oral'||it.t==='order')?'te roagă':(it.a==='D'?'povestește':'întreabă');
+    h='<div class="stage" style="--ac:var('+acol(it.a)+')"><div class="sun"></div>'+sceneSVG();
+    h+='<div class="fine"><span class="muted small">'+esc(st2?st2.nume:'')+' · '+esc(r.moment)+'</span><span class="muted small">'+esc(ci.loc)+' · întrebarea '+(r.i+1)+' din '+ITEMS.length+'</span></div>';
+    h+='<div class="trail" role="progressbar" aria-valuemin="0" aria-valuemax="'+ITEMS.length+'" aria-valuenow="'+r.i+'">'+ITEMS.map(function(x,k){return '<i class="'+(k<r.i?'done':(k===r.i?'cur':''))+'" style="--c:var('+acol(x.a)+')"></i>'}).join('')+'</div>';
+    h+='<div class="cue"><b>Pentru învățător</b>'+esc(it.say)+'</div>';
+    h+='<div class="talk"><div class="chr" id="chr">'+charSVG(it.a)+'</div><div class="bubble"><span class="who">'+esc(ci.nome)+' '+verb+'</span><div class="q">'+esc(it.q)+'</div></div></div>'+vis(it.v);
+    if(it.t==='choice'){
+      h+='<div class="opts">'+it.ch.map(function(c){return '<button class="opt" data-act="pick" data-v="'+c+'">'+c+'</button>'}).join('')+'</div>'
+    } else if(it.t==='order'){
+      h+='<div class="opts">'+it.items.map(function(c){var k=r.order.indexOf(c);return '<button class="opt" data-act="order" data-v="'+c+'" aria-pressed="'+(k>=0)+'">'+c+(k>=0?'<span class="bd">'+(k+1)+'</span>':'')+'</button>'}).join('')+'</div><button class="btn ghost" data-act="orderclear">Șterge alegerea</button>'
+    } else if(it.t==='multi'){
+      h+='<div class="opts" style="max-width:640px">'+it.opts.map(function(c){return '<button class="opt wide" data-act="mtoggle" data-v="'+esc(c)+'" aria-pressed="'+(r.multi.indexOf(c)>=0)+'">'+esc(c)+'</button>'}).join('')+'</div><button class="btn big" data-act="mdone">Gata</button>'
+    } else {
+      h+='<div class="big0" aria-hidden="true">0 1 2 3 4 5 6 7 8 9 10</div><div class="tmark"><button class="btn" data-act="oral" data-v="1">Corect</button><button class="btn ghost" data-act="oral" data-v="0.5">Cu ajutor / o greșeală</button><button class="btn danger" data-act="oral" data-v="0">Nu reușește</button></div>'
+    }
+    h+='<div class="fine"><span class="row"><button class="btn ghost" data-act="back"'+(r.i===0?' disabled':'')+'>Înapoi</button><button class="btn ghost" data-act="skip">Sari peste</button></span>';
+    h+=S.confirmStop?'<span class="row"><button class="btn danger" data-act="stopyes">Oprește și renunță</button><button class="btn ghost" data-act="stopno">Continuă</button></span>':'<button class="btn danger" data-act="stop">Oprește testul</button>';
+    h+='</div></div>';
+  }
+  $('p-test').innerHTML=h
+}
+function startRun(){
+  var id=($('selStu')||{}).value||S.sel;if(!id)return;
+  S.sel=id;S.run={id:id,moment:S.moment,i:0,s:{},a:{},multi:[],order:[],done:false};S.confirmStop=false;S.busy=false;renderTest()
+}
+function advance(resp){
+  var r=S.run,it=ITEMS[r.i];
+  r.a[it.id]=String(resp);r.s[it.id]=score(it,resp);r.multi=[];r.order=[];
+  r.i++;S.busy=false;
+  if(r.i>=ITEMS.length){finishRun();return}
+  renderTest()
+}
+async function finishRun(){
+  var r=S.run,st=clone(stu(r.id));if(!st.ev)st.ev={};
+  st.ev[r.moment]={data:today(),s:r.s,a:r.a};
+  r.done=true;await putStudent(st);renderTest();refresh()
+}
+function nextStudent(){
+  var m=S.moment,nx=S.elevi.filter(function(e){return !(e.ev&&e.ev[m])})[0];
+  S.run=null;if(nx){S.sel=nx.id;renderTest()}else{toast('Toți elevii au fost evaluați la acest moment.');S.tab='rez';showTab()}
+}
+
+/* ---------- Grafice ---------- */
+function pal(){var cs=getComputedStyle(document.documentElement),g=function(n){return cs.getPropertyValue(n).trim()};return{ink:g('--ink'),muted:g('--muted'),line:g('--line'),ok:g('--ok'),mid:g('--mid'),low:g('--low'),accent:g('--accent'),areas:AREAS.map(function(a){return g(a.col)})}}
+var CH=[['arii','Pe arii'],['radar','Profil radar'],['niv','Niveluri pe arii'],['inel','Niveluri total'],['itemi','Pe itemi'],['elevi','Pe elevi'],['progres','Progres'],['harta','Hartă elevi × itemi']];
+function renderRez(){
+  var m=S.moment,ev=evalSt(m),h='';
+  h+='<div class="card"><h2>Rezultate și grafice</h2>';
+  if(!ev.length){h+='<p class="muted">Niciun elev nu a fost evaluat la momentul „'+esc(m)+'”. Aplică testul sau încarcă datele demonstrative din „Clasa mea”.</p></div>';$('p-rez').innerHTML=h;destroyChart();return}
+  var ta=areaAvg(m),tot=avg(ev.map(function(e){return pctTot(e.ev[m])})),cnt={ok:0,mid:0,low:0};
+  ev.forEach(function(e){cnt[lvl(pctTot(e.ev[m]))]++});
+  h+='<div class="kpis"><div class="kpi"><b>'+ev.length+'</b><span>elevi evaluați</span></div><div class="kpi"><b>'+Math.round(tot)+'%</b><span>media clasei</span></div><div class="kpi"><b>'+cnt.ok+'</b><span>cu nivel „Atins”</span></div><div class="kpi"><b>'+cnt.low+'</b><span>au nevoie de sprijin</span></div></div></div>';
+  h+='<div class="card"><div class="row" style="justify-content:space-between"><div class="pills" role="group" aria-label="Tip de grafic">'+CH.map(function(c){return '<button data-act="chart" data-v="'+c[0]+'" aria-pressed="'+(S.chart===c[0])+'">'+c[1]+'</button>'}).join('')+'</div>';
+  if(S.chart==='radar')h+='<label class="inl small" for="rezStu">Compară cu <select id="rezStu"><option value="">— doar clasa —</option>'+ev.map(function(e){return '<option value="'+e.id+'"'+(e.id===S.sel?' selected':'')+'>'+esc(e.nume)+'</option>'}).join('')+'</select></label>';
+  h+='</div>';
+  if(S.chart==='harta'){h+='<div id="hm" class="tw"></div>'}
+  else h+='<div class="chbox" id="chbox"><canvas id="cv" role="img" aria-label="Grafic al rezultatelor"></canvas></div><p id="chmsg" class="note" hidden></p><details><summary>Vezi datele graficului</summary><div class="tw" id="chtab"></div></details>';
+  h+='</div>';
+  $('p-rez').innerHTML=h;
+  if(S.tab==='rez')drawChart()
+}
+function destroyChart(){if(chart){chart.destroy();chart=null}}
+function drawChart(){
+  destroyChart();var m=S.moment,ev=evalSt(m);if(!ev.length)return;
+  if(S.chart==='harta'){drawHeat();return}
+  if(typeof Chart==='undefined'){var mg=$('chmsg');if(mg){mg.hidden=false;mg.textContent='Graficul nu a putut fi încărcat acum. Datele sunt în tabelul de mai jos.'}$('chbox').style.display='none'}
+  var p=pal(),labels=[],type='bar',h=340,tbl={head:[],rows:[]},cfg;
+  if(typeof Chart!=='undefined'){Chart.defaults.font.family="Nunito,system-ui,sans-serif";Chart.defaults.font.size=13;Chart.defaults.color=p.muted}
+  var sc=function(extra){var o={grid:{color:p.line},ticks:{color:p.muted}};for(var k in extra)o[k]=extra[k];return o};
+  var tick=function(v){return v+'%'};
+  var c=S.chart;
+  if(c==='arii'){
+    labels=AREAS.map(function(a){return a.nume});var d=areaAvg(m).map(Math.round);
+    tbl={head:['Aria','Media clasei (%)'],rows:labels.map(function(l,i){return [l,d[i]]})};
+    cfg={type:'bar',data:{labels:labels,datasets:[{label:'Media clasei (%)',data:d,backgroundColor:p.areas,borderRadius:6},{type:'line',label:'Prag „Atins” ('+S.T.ok+'%)',data:labels.map(function(){return S.T.ok}),borderColor:p.ok,borderDash:[6,4],pointRadius:0,borderWidth:2}]},options:{scales:{y:sc({min:0,max:100,ticks:{color:p.muted,callback:tick}}),x:sc({grid:{display:false}})}}}
+  } else if(c==='radar'){
+    var cl=areaAvg(m).map(Math.round),ds=[{label:'Media clasei',data:cl,borderColor:p.accent,backgroundColor:p.accent+'33',pointBackgroundColor:p.accent,borderWidth:2}],so=S.sel&&stu(S.sel);
+    tbl={head:['Aria','Media clasei (%)'],rows:AREAS.map(function(a,i){return [a.nume,cl[i]]})};
+    if(so&&so.ev&&so.ev[m]){var sd=AREAS.map(function(a){return Math.round(pctArea(so.ev[m],a.id))});ds.push({label:so.nume,data:sd,borderColor:p.areas[2],backgroundColor:p.areas[2]+'33',pointBackgroundColor:p.areas[2],borderWidth:2});tbl.head.push(so.nume+' (%)');tbl.rows.forEach(function(r,i){r.push(sd[i])})}
+    cfg={type:'radar',data:{labels:AREAS.map(function(a){return a.scurt}),datasets:ds},options:{scales:{r:{min:0,max:100,ticks:{stepSize:25,color:p.muted,backdropColor:'transparent',callback:tick},grid:{color:p.line},angleLines:{color:p.line},pointLabels:{color:p.ink,font:{size:14,weight:'700'}}}}}};h=400
+  } else if(c==='niv'){
+    var cn={ok:[],mid:[],low:[]};
+    AREAS.forEach(function(a){var k={ok:0,mid:0,low:0};ev.forEach(function(e){k[lvl(pctArea(e.ev[m],a.id))]++});for(var z in k)cn[z].push(k[z])});
+    tbl={head:['Aria','Atins','În dezvoltare','Are nevoie de sprijin'],rows:AREAS.map(function(a,i){return [a.nume,cn.ok[i],cn.mid[i],cn.low[i]]})};
+    cfg={type:'bar',data:{labels:AREAS.map(function(a){return a.scurt}),datasets:[{label:'Atins',data:cn.ok,backgroundColor:p.ok},{label:'În dezvoltare',data:cn.mid,backgroundColor:p.mid},{label:'Are nevoie de sprijin',data:cn.low,backgroundColor:p.low}]},options:{scales:{x:sc({stacked:true,grid:{display:false}}),y:sc({stacked:true,title:{display:true,text:'Număr de elevi',color:p.muted},ticks:{color:p.muted,precision:0}})}}}
+  } else if(c==='inel'){
+    var k2={ok:0,mid:0,low:0};ev.forEach(function(e){k2[lvl(pctTot(e.ev[m]))]++});
+    tbl={head:['Nivel','Elevi'],rows:[['Atins',k2.ok],['În dezvoltare',k2.mid],['Are nevoie de sprijin',k2.low]]};
+    cfg={type:'doughnut',data:{labels:['Atins','În dezvoltare','Are nevoie de sprijin'],datasets:[{data:[k2.ok,k2.mid,k2.low],backgroundColor:[p.ok,p.mid,p.low],borderColor:getComputedStyle(document.body).backgroundColor,borderWidth:3}]},options:{cutout:'58%'}};h=360
+  } else if(c==='itemi'){
+    var rt=ITEMS.map(function(it){return Math.round(itemRate(m,it))});
+    tbl={head:['Item','Aria','Reușită (%)'],rows:ITEMS.map(function(it,i){return [it.short,it.a,rt[i]]})};
+    cfg={type:'bar',data:{labels:ITEMS.map(function(it){return it.short}),datasets:[{label:'Reușită (%)',data:rt,backgroundColor:rt.map(function(v){return p[lvl(v)]}),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:sc({min:0,max:100,ticks:{color:p.muted,callback:tick}}),y:sc({grid:{display:false}})}}};h=ITEMS.length*30+70
+  } else if(c==='elevi'){
+    var so2=ev.map(function(e){return {n:e.nume,v:Math.round(pctTot(e.ev[m]))}}).sort(function(a,b){return b.v-a.v});
+    tbl={head:['Elev','Total (%)'],rows:so2.map(function(x){return [x.n,x.v]})};
+    cfg={type:'bar',data:{labels:so2.map(function(x){return x.n}),datasets:[{label:'Total (%)',data:so2.map(function(x){return x.v}),backgroundColor:so2.map(function(x){return p[lvl(x.v)]}),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:sc({min:0,max:100,ticks:{color:p.muted,callback:tick}}),y:sc({grid:{display:false}})}}};h=Math.max(320,so2.length*28+70)
+  } else if(c==='progres'){
+    var ms=MOMENTE.filter(function(x){return evalSt(x).length});
+    if(ms.length<2){var mg2=$('chmsg');mg2.hidden=false;mg2.textContent='Graficul de progres apare când ai rezultate la cel puțin două momente (de exemplu Inițială și Finală). Acum ai: '+(ms.length?ms.join(', '):'niciunul')+'.';$('chbox').style.display='none';$('chtab').innerHTML='';return}
+    var cols=[p.muted,p.areas[1],p.accent];
+    var dsx=ms.map(function(x,i){return {label:x+' ('+evalSt(x).length+' elevi)',data:areaAvg(x).map(Math.round),backgroundColor:cols[MOMENTE.indexOf(x)],borderRadius:5}});
+    tbl={head:['Aria'].concat(ms),rows:AREAS.map(function(a,i){return [a.nume].concat(dsx.map(function(d){return d.data[i]}))})};
+    cfg={type:'bar',data:{labels:AREAS.map(function(a){return a.scurt}),datasets:dsx},options:{scales:{y:sc({min:0,max:100,ticks:{color:p.muted,callback:tick}}),x:sc({grid:{display:false}})}}}
+  }
+  var tt='<table><thead><tr>'+tbl.head.map(function(x){return '<th>'+esc(x)+'</th>'}).join('')+'</tr></thead><tbody>'+tbl.rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+esc(x)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
+  $('chtab').innerHTML=tt;
+  if(typeof Chart==='undefined'||!cfg)return;
+  $('chbox').style.height=h+'px';
+  cfg.options=cfg.options||{};cfg.options.responsive=true;cfg.options.maintainAspectRatio=false;
+  cfg.options.plugins=cfg.options.plugins||{};
+  if(!cfg.options.plugins.legend)cfg.options.plugins.legend={labels:{color:p.ink}};
+  else if(cfg.options.plugins.legend.display!==false)cfg.options.plugins.legend.labels={color:p.ink};
+  chart=new Chart($('cv'),cfg)
+}
+function drawHeat(){
+  var m=S.moment,ev=evalSt(m);
+  var h='<table class="hm"><thead><tr><th style="text-align:left">Elev</th>'+ITEMS.map(function(it){return '<th class="'+it.a+'" title="'+esc(it.short)+'">'+it.id+'</th>'}).join('')+'<th>Total</th></tr></thead><tbody>';
+  ev.forEach(function(e){h+='<tr><td class="n">'+esc(e.nume)+'</td>'+ITEMS.map(function(it){var v=e.ev[m].s[it.id]||0;return '<td class="'+(v===1?'c1':(v>0?'c5':'c0'))+'">'+(v===1?'✓':(v>0?'~':'✗'))+'</td>'}).join('')+'<td><b>'+Math.round(pctTot(e.ev[m]))+'%</b></td></tr>'});
+  h+='<tr><td class="n"><b>Reușită item</b></td>'+ITEMS.map(function(it){return '<td><b>'+Math.round(itemRate(m,it))+'</b></td>'}).join('')+'<td></td></tr></tbody></table>';
+  h+='<p class="small muted" style="margin-top:.6rem">✓ corect · ~ parțial · ✗ greșit. Culorile de sub cod: '+AREAS.map(function(a){return '<i class="dot" style="background:var('+a.col+')"></i>'+a.scurt}).join(' · ')+'</p>';
+  h+='<details style="margin-top:.5rem"><summary>Ce măsoară fiecare item</summary><ul class="small">'+ITEMS.map(function(it){return '<li><b>'+it.id+'</b> · '+esc(it.short)+'</li>'}).join('')+'</ul></details>';
+  $('hm').innerHTML=h
+}
+
+/* ---------- Propuneri ---------- */
+function actsFor(a,l){var b=BANK[a],ix=l==='low'?[0,1]:(l==='mid'?[1,2]:[3]);return ix.map(function(i){return b[i]})}
+function actHTML(x){return '<div class="act"><b>'+esc(x.n)+'</b><span class="m">'+esc(x.m)+'</span><span class="small">'+esc(x.d)+'</span></div>'}
+function names(list,m){return list.length?list.map(function(e){return esc(e.nume)}).join(', '):'<span class="muted">—</span>'}
+function renderProp(){
+  var m=S.moment,ev=evalSt(m),h='';
+  if(!ev.length){$('p-prop').innerHTML='<div class="card"><h2>Propuneri de îmbunătățire</h2><p class="muted">Propunerile se generează din rezultate. Nu există încă evaluări la momentul „'+esc(m)+'”.</p></div>';return}
+  var ta=areaAvg(m),ord=AREAS.map(function(a,i){return {a:a,p:ta[i]}}).sort(function(x,y){return x.p-y.p});
+  var best=ord[ord.length-1],worst=ord[0];
+  h+='<div class="card"><h2>Pentru toată clasa</h2><p>La momentul „'+esc(m)+'” au fost evaluați <b>'+ev.length+'</b> elevi. Cea mai bine stăpânită arie este <b>'+best.a.nume+'</b> ('+Math.round(best.p)+'%), iar cea mai fragilă este <b>'+worst.a.nume+'</b> ('+Math.round(worst.p)+'%).</p></div>';
+  h+='<div class="grid2">';
+  ord.forEach(function(o){
+    var l=lvl(o.p),weak=areaItems(o.a.id).filter(function(it){return itemRate(m,it)<70});
+    h+='<div class="card"><div class="row" style="justify-content:space-between"><h3><i class="dot" style="background:var('+o.a.col+')"></i>'+o.a.nume+'</h3>'+chip(l)+'</div><p class="small muted">Media clasei: '+Math.round(o.p)+'%</p>';
+    h+=l==='ok'?'<p class="small">Aria este stăpânită de clasă. Păstreaz-o vie cu un joc scurt de consolidare, o dată pe săptămână, sau oferă extindere celor care termină repede.</p>':'<p class="small">Propunere: 2 jocuri de câte 5–8 minute, de 3 ori pe săptămână, timp de două săptămâni, apoi mini-verificare orală pe itemii slabi.</p>';
+    h+=actsFor(o.a.id,l).map(actHTML).join('');
+    if(weak.length)h+='<p class="small"><b>Itemi de reverificat:</b> '+weak.map(function(it){return esc(it.short)+' ('+Math.round(itemRate(m,it))+'%)'}).join('; ')+'.</p>';
+    h+='</div>'
+  });
+  h+='</div>';
+  var fi=ITEMS.filter(function(it){return itemRate(m,it)<60}).sort(function(a,b){return itemRate(m,a)-itemRate(m,b)});
+  h+='<div class="card"><h2>Greșeli frecvente și ce poți face</h2>';
+  if(!fi.length)h+='<p class="muted">Niciun item nu are o reușită sub 60%.</p>';
+  else h+='<div class="grp">'+fi.map(function(it){
+    var w={};ev.forEach(function(e){var r=e.ev[m];if((r.s[it.id]||0)<1&&r.a&&r.a[it.id]!==undefined)w[r.a[it.id]]=(w[r.a[it.id]]||0)+1});
+    var top=Object.keys(w).sort(function(a,b){return w[b]-w[a]})[0],dg=top&&it.diag&&it.diag[top]&&w[top]>=2?' Cea mai frecventă greșeală: răspunsul „'+esc(top)+'” ('+w[top]+' elevi) — '+esc(it.diag[top])+'.':'';
+    return '<div class="act"><b>'+esc(it.short)+' · '+Math.round(itemRate(m,it))+'%</b><span class="small">'+dg+' '+esc(it.hint)+'</span></div>'}).join('')+'</div>';
+  h+='</div>';
+  h+='<div class="card"><h2>Grupe de lucru</h2><p class="small muted">Formate după nivelul pe fiecare arie. Un elev poate apărea în mai multe grupe.</p><div class="grid2">';
+  AREAS.forEach(function(a){
+    var lo=ev.filter(function(e){return lvl(pctArea(e.ev[m],a.id))==='low'}),mi=ev.filter(function(e){return lvl(pctArea(e.ev[m],a.id))==='mid'});
+    h+='<div class="grp"><b><i class="dot" style="background:var('+a.col+')"></i>'+a.nume+'</b><span class="small"><b>Sprijin:</b> '+names(lo)+'</span><span class="small"><b>Consolidare:</b> '+names(mi)+'</span></div>'
+  });
+  var top2=ev.filter(function(e){return AREAS.every(function(a){return lvl(pctArea(e.ev[m],a.id))==='ok'})});
+  h+='<div class="grp"><b>Grupa de extindere</b><span class="small">Atins la toate ariile: '+names(top2)+'</span></div></div></div>';
+  h+='<div class="card"><h2>Fișa unui elev</h2><label class="inl" for="propStu">Elev <select id="propStu">'+ev.map(function(e){return '<option value="'+e.id+'"'+(e.id===S.sel?' selected':'')+'>'+esc(e.nume)+'</option>'}).join('')+'</select></label><div id="fiche"></div></div>';
+  $('p-prop').innerHTML=h;
+  var sid=$('propStu');if(sid){if(!ev.some(function(e){return e.id===S.sel}))S.sel=ev[0].id;sid.value=S.sel;renderFiche()}
+}
+function descr(st,ev){
+  var parts=[];
+  AREAS.forEach(function(a){
+    var l=lvl(pctArea(ev,a.id));
+    if(l==='ok')parts.push('la '+a.nume.toLowerCase()+', '+a.desc+' în mod sigur');
+    else if(l==='mid')parts.push('la '+a.nume.toLowerCase()+', este în curs de consolidare ('+a.desc+' cu mici ezitări)');
+    else parts.push('la '+a.nume.toLowerCase()+', are nevoie de sprijin și exerciții cu obiecte concrete');
+  });
+  return st.nume+': '+parts.join('; ')+'. Se recomandă continuarea activităților de joc cu material concret, urmate de mini-verificări orale.'
+}
+function renderFiche(){
+  var m=S.moment,st=stu(S.sel),h='';
+  if(!st||!st.ev||!st.ev[m]){$('fiche').innerHTML='';return}
+  var ev=st.ev[m];
+  h+='<h3 style="margin-top:.5rem">'+esc(st.nume)+' · '+esc(m)+' · '+esc(ev.data||'')+'</h3><div class="abars">';
+  AREAS.forEach(function(a){var p=pctArea(ev,a.id);h+='<div class="ab"><span><i class="dot" style="background:var('+a.col+')"></i>'+a.nume+'</span><div class="tr"><i style="width:'+p+'%;background:var('+a.col+')"></i></div><span>'+Math.round(p)+'% '+chip(lvl(p))+'</span></div>'});
+  h+='</div>';
+  var miss=ITEMS.filter(function(it){return (ev.s[it.id]||0)<1});
+  h+=miss.length?'<div><b>Itemi de reluat:</b><ul class="small">'+miss.map(function(it){var r=ev.a&&ev.a[it.id],d=it.diag&&it.diag[r];return '<li>'+esc(it.short)+((ev.s[it.id]||0)>0?' (parțial)':'')+(d?' — '+esc(d):'')+'</li>'}).join('')+'</ul></div>':'<p>Toți itemii au fost rezolvați corect.</p>';
+  var need=AREAS.filter(function(a){return lvl(pctArea(ev,a.id))!=='ok'}).map(function(a){return {a:a,l:lvl(pctArea(ev,a.id))}});
+  h+='<h3>Plan individual de sprijin</h3>';
+  h+=need.length?'<div class="grid2">'+need.map(function(x){return '<div class="grp"><b><i class="dot" style="background:var('+x.a.col+')"></i>'+x.a.nume+'</b>'+actsFor(x.a.id,x.l).map(actHTML).join('')+'</div>'}).join('')+'</div>':'<div class="grid2">'+actHTML(BANK.C[3])+actHTML(BANK.D[3])+'</div><p class="small muted">Elevul a atins toate ariile: poate primi activități de extindere.</p>';
+  h+='<h3>Text pentru raportul descriptiv</h3><textarea id="rep" rows="5" readonly>'+esc(descr(st,ev))+'</textarea><div class="row"><button class="btn ghost" data-act="copy">Copiază textul</button></div>';
+  h+='<label for="obs" class="small" style="font-weight:700">Observațiile mele (se salvează automat)</label><textarea id="obs" rows="3" placeholder="Atenție, ritm de lucru, strategii observate…">'+esc(ev.obs||'')+'</textarea>';
+  $('fiche').innerHTML=h
+}
+
+/* ---------- Date demonstrative, export, import ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function genEv(rand,theta){
+  var D={n1:-1.6,n2:-.6,n3:-1,n4:0,n5:-.5,n6:.4,o1:-1,o2:0,o3:.2,o4:.4,d1:-.5,d2:.2,d3:.8,d4:1.1,d5:1.4,p1:.3,p2:1.1},s={},a={};
+  ITEMS.forEach(function(it){
+    var pr=1/(1+Math.exp(-(theta-D[it.id]))),ok=rand()<pr;
+    if(it.t==='oral'){s[it.id]=ok?1:(rand()<.5?.5:0);a[it.id]=String(s[it.id])}
+    else if(it.t==='choice'){if(ok){a[it.id]=String(it.ans);s[it.id]=1}else{var ks=it.diag?Object.keys(it.diag):[],w=ks.length&&rand()<.65?ks[Math.floor(rand()*ks.length)]:String(it.ch.filter(function(c){return c!==it.ans})[Math.floor(rand()*(it.ch.length-1))]);a[it.id]=w;s[it.id]=0}}
+    else if(it.t==='order'){if(ok){a[it.id]=it.ans.join();s[it.id]=1}else{a[it.id]='2,9,4';s[it.id]=.5}}
+    else{if(ok){a[it.id]=it.ans.join('|');s[it.id]=1}else{a[it.id]='3 + 5|6 + 3';s[it.id]=0}}
+  });
+  return {data:today(),s:s,a:a}
+}
+async function loadDemo(){
+  if(S.busy)return;S.busy=true;toast('Se încarcă datele demonstrative…');
+  var r=rng(2026),room=30-S.elevi.length,N=Math.min(24,room);
+  for(var i=0;i<N;i++){
+    var th=(r()+r()+r()-1.5)*2.2+0.1,id=newId();
+    var st={id:id,nume:'Demo '+(i<9?'0':'')+(i+1),demo:true,creat:today(),ev:{}};
+    st.ev['Inițială']=genEv(r,th);st.ev['Finală']=genEv(r,th+1);
+    await putStudent(st)
+  }
+  S.busy=false;refresh();toast('Clasa demonstrativă este încărcată.')
+}
+async function delDemo(){
+  var ids=S.elevi.filter(function(e){return e.demo}).map(function(e){return e.id});
+  for(var i=0;i<ids.length;i++)await delStudent(ids[i]);
+  refresh();toast('Datele demo au fost șterse.')
+}
+function csv(){
+  var rows=[['Elev','Moment','Data'].concat(ITEMS.map(function(i){return i.id}),AREAS.map(function(a){return '% '+a.scurt}),['% Total','Nivel'])];
+  S.elevi.forEach(function(st){MOMENTE.forEach(function(m){var e=st.ev&&st.ev[m];if(!e)return;rows.push([st.nume,m,e.data||''].concat(ITEMS.map(function(i){return e.s[i.id]===undefined?'':e.s[i.id]}),AREAS.map(function(a){return Math.round(pctArea(e,a.id))}),[Math.round(pctTot(e)),LV[lvl(pctTot(e))].n]))})});
+  return '﻿'+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(';')}).join('\r\n')
+}
+async function save(name,data){
+  try{
+    var d=window.claude&&window.claude.use?await window.claude.use('downloads'):null;
+    if(!d){toast('Descărcarea nu este disponibilă în această vizualizare.');return}
+    await d.save({filename:name,data:data});toast('Fișier salvat.')
+  }catch(e){if(!e||e.code!=='declined')toast('Fișierul nu a putut fi salvat.')}
+}
+async function importFile(f){
+  try{
+    var o=JSON.parse(await f.text()),list=Array.isArray(o)?o:o.elevi;
+    if(!Array.isArray(list))throw 0;
+    var room=30-S.elevi.length,n=0;
+    for(var i=0;i<list.length&&n<room;i++){var x=list[i];if(!x||!x.nume)continue;x.id=newId();if(!x.ev)x.ev={};await putStudent(x);n++}
+    refresh();toast(n+' elevi importați.')
+  }catch(e){toast('Fișierul nu este o copie validă.')}
+}
+async function addNames(){
+  var ta=$('names'),lines=ta.value.split('\n').map(function(s){return s.trim()}).filter(Boolean),room=30-S.elevi.length;
+  if(!lines.length){toast('Scrie cel puțin un nume.');return}
+  var take=lines.slice(0,room);
+  for(var i=0;i<take.length;i++)await putStudent({id:newId(),nume:take[i].slice(0,40),creat:today(),ev:{}});
+  if(lines.length>room)toast('Clasa are maximum 30 de elevi. Au fost adăugați '+take.length+'.');
+  refresh()
+}
+
+/* ---------- Navigare și evenimente ---------- */
+function showTab(){
+  ['clasa','test','rez','prop'].forEach(function(t){$('p-'+t).hidden=S.tab!==t});
+  Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(b){b.setAttribute('aria-selected',String(b.dataset.v===S.tab))});
+  if(S.tab==='rez')drawChart();
+  window.scrollTo(0,0)
+}
+function refresh(){renderStor();renderClasa();if(!S.run)renderTest();renderRez();renderProp()}
+
+document.addEventListener('click',async function(ev){
+  var b=ev.target.closest('[data-act]');if(!b)return;
+  var a=b.dataset.act,v=b.dataset.v,r=S.run;
+  if(a==='tab'){S.tab=v;showTab();return}
+  if(a==='add'){await addNames();return}
+  if(a==='go'){S.sel=b.dataset.id;S.run=null;S.tab='test';renderTest();showTab();return}
+  if(a==='del'){S.confirmDel=b.dataset.id;renderClasa();return}
+  if(a==='delno'){S.confirmDel=null;renderClasa();return}
+  if(a==='delyes'){var id=S.confirmDel;S.confirmDel=null;await delStudent(id);refresh();return}
+  if(a==='demo'){await loadDemo();return}
+  if(a==='demodel'){await delDemo();return}
+  if(a==='expcsv'){save('rezultate-numere-0-10.csv',csv());return}
+  if(a==='expjson'){save('copie-numere-0-10.json',JSON.stringify({v:1,elevi:S.elevi}));return}
+  if(a==='imp'){$('file').click();return}
+  if(a==='start'){startRun();return}
+  if(a==='chart'){S.chart=v;renderRez();return}
+  if(a==='copy'){var t=$('rep');try{await navigator.clipboard.writeText(t.value);toast('Text copiat.')}catch(e){t.removeAttribute('readonly');t.select();toast('Selectat. Apasă Ctrl+C pentru a copia.')}return}
+  if(a==='next'){nextStudent();return}
+  if(a==='home'){S.run=null;S.tab='clasa';refresh();showTab();return}
+  if(a==='fiche'){S.sel=r.id;S.run=null;S.tab='prop';refresh();showTab();return}
+  if(!r||r.done)return;
+  var it=ITEMS[r.i];
+  if(a==='pick'){if(S.busy)return;S.busy=true;var cc=$('chr');if(cc)cc.classList.add('nod');Array.prototype.forEach.call(document.querySelectorAll('.opt'),function(o){o.setAttribute('aria-pressed',String(o===b))});setTimeout(function(){advance(v)},450);return}
+  if(a==='oral'){advance(v);return}
+  if(a==='order'){var n=Number(v);if(r.order.indexOf(n)<0)r.order.push(n);if(r.order.length===it.items.length){renderTest();setTimeout(function(){advance(r.order.join(','))},450)}else renderTest();return}
+  if(a==='orderclear'){r.order=[];renderTest();return}
+  if(a==='mtoggle'){var k=r.multi.indexOf(v);if(k>=0)r.multi.splice(k,1);else r.multi.push(v);renderTest();return}
+  if(a==='mdone'){advance(r.multi.join('|'));return}
+  if(a==='back'){if(r.i>0){r.i--;r.multi=[];r.order=[];S.busy=false;renderTest()}return}
+  if(a==='skip'){r.a[it.id]='—';r.s[it.id]=0;r.multi=[];r.order=[];r.i++;S.busy=false;if(r.i>=ITEMS.length)finishRun();else renderTest();return}
+  if(a==='stop'){S.confirmStop=true;renderTest();return}
+  if(a==='stopno'){S.confirmStop=false;renderTest();return}
+  if(a==='stopyes'){S.run=null;S.confirmStop=false;S.busy=false;renderTest();return}
+});
+document.addEventListener('change',async function(e){
+  var t=e.target;
+  if(t.id==='moment'){S.moment=t.value;S.run=null;refresh();return}
+  if(t.id==='selStu'){S.sel=t.value;return}
+  if(t.id==='rezStu'){S.sel=t.value||null;drawChart();return}
+  if(t.id==='propStu'){S.sel=t.value;renderFiche();return}
+  if(t.id==='thOk'||t.id==='thMid'){
+    var ok=Number($('thOk').value),mid=Number($('thMid').value);
+    if(ok>mid&&mid>0&&ok<=100){S.T={ok:ok,mid:mid};thSet();refresh()}else{toast('Pragul „Atins” trebuie să fie mai mare decât pragul „În dezvoltare”.');renderClasa()}
+    return
+  }
+  if(t.id==='file'&&t.files&&t.files[0]){await importFile(t.files[0]);t.value='';return}
+  if(t.id==='obs'){
+    var st=stu(S.sel);if(st&&st.ev&&st.ev[S.moment]){st=clone(st);st.ev[S.moment].obs=t.value;await putStudent(st);toast('Observațiile au fost salvate.')}
+  }
+});
+
+$('moment').innerHTML=MOMENTE.map(function(m){return '<option>'+m+'</option>'}).join('');
+thGet();S.elevi=sortEl(lsGet());
+if(S.elevi.length)S.sel=S.elevi[0].id;
+refresh();showTab();startDb();
+try{
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){if(S.tab==='rez')drawChart()});
+  new MutationObserver(function(){if(S.tab==='rez')drawChart()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})
+}catch(e){}
+})();
+</script>
+
+</body></html>
